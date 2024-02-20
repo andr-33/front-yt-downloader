@@ -20,6 +20,7 @@ const App = () => {
     axios.post('http://127.0.0.1:8000/downloader/extract-audio', {
       "video_url": link
     }).then(res => {
+      console.log(res.headers);
       const blob = new Blob([res.data], { type: 'audio/mp3' });
       setDataFile(blob);
       setIsWaiting(false);
@@ -44,19 +45,23 @@ const App = () => {
       <main className='mt-8 flex flex-col w-full items-center'>
 
         <form className='mb-6' onSubmit={handleSubmit}>
-          <input className='w-96 border rounded-md pl-4 py-2 text-blue-700 placeholder:font-concert bg-[#EAEAEA]' type="url"
-            placeholder="Pega el link acá" required ref={inputRef}
-          />
-          <button className={`px-4 py-2 ml-5 rounded-md font-concert text-lg ${isWaiting ? 'bg-[#558C03] cursor-not-allowed' : 'bg-[#93F205]'}`}
-            disabled={isWaiting}
-            type='submit'>
-            Enviar
-          </button>
+          <div className='w-full flex flex-row justify-center items-center'>
+            <input className='w-96 rounded-md pl-4 py-2 text-blue-700 placeholder:font-concert placeholder:pb-2 bg-[#EAEAEA]' 
+              type="url"
+              placeholder="Pega el link acá" required ref={inputRef}
+            />
+            <button className={`px-4 pb-2 ml-5 rounded-md font-concert text-lg hover:bg-[#93F205]/80 
+              ${isWaiting ? 'bg-[#558C03] cursor-not-allowed' : 'bg-[#93F205]'}`}
+              disabled={isWaiting}
+              type='submit'>
+              Enviar
+            </button>
+          </div>
         </form>
 
         <section>
           {dataFile && (
-            <button className='px-4 py-2 rounded-md bg-[#93F205] font-concert text-xl' onClick={downloadFile}>
+            <button className='px-4 py-2 rounded-md bg-[#93F205] hover:bg-[#93F205]/80 font-concert text-xl' onClick={downloadFile}>
               Descargar .mp3
               <Download className='m-auto animate-bounce mt-2' />
             </button>
